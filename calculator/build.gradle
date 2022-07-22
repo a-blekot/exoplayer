@@ -1,0 +1,29 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.a_blekot.exoplayer.calculator'
+    compileSdkVersion rootProject.ext.compile_sdk_version
+    defaultConfig {
+        minSdkVersion rootProject.ext.min_sdk_version
+        targetSdkVersion rootProject.ext.target_sdk_version
+        buildToolsVersion rootProject.ext.build_version
+    }
+    buildTypes {
+        dev {
+            initWith debug
+        }
+        release {
+            consumerProguardFiles 'proguard-project.txt'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}

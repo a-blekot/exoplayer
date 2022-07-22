@@ -1,0 +1,102 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.a_blekot.exoplayer.testlib'
+    compileSdkVersion rootProject.ext.compile_sdk_version
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "x86_64", "x86", "arm64-v8a"
+            universalApk true
+        }
+    }
+    defaultConfig {
+        minSdkVersion rootProject.ext.min_sdk_version
+        targetSdkVersion rootProject.ext.target_sdk_version
+        buildToolsVersion rootProject.ext.build_version
+    }
+    buildTypes {
+        dev {
+            initWith debug
+        }
+        release {
+            consumerProguardFiles 'proguard-project.txt'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+}
+afterEvaluate {
+    publishing {
+        publications {
+            libraryDev(MavenPublication) {
+                artifact bundleDevAar
+
+                groupId 'com.a-blekot.exoplayer'
+                artifactId 'testlib-dev'
+                version = "1.0.0"
+            }
+            libraryDebug(MavenPublication) {
+                artifact bundleDebugAar
+
+                groupId 'com.a-blekot.exoplayer'
+                artifactId 'testlib-debug'
+                version = "1.0.0"
+            }
+            libraryRelease(MavenPublication) {
+                artifact bundleReleaseAar
+
+                groupId 'com.a-blekot.exoplayer'
+                artifactId 'testlib'
+                version = "1.0.0"
+            }
+        }
+
+        repositories {
+            maven {
+                url 'your_maven_url'
+                credentials {
+                    username "your_user_name"
+                    password "your_password"
+                }
+            }
+        }
+
+//        pom {
+//            name = 'Testlib'
+//            description = 'Test lib description'
+////                licenses {
+////                    license {
+////                        name = 'The Apache License, Version 2.0'
+////                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+////                    }
+////                }
+//            developers {
+//                developer {
+//                    id = 'a-blekot'
+//                    name = 'Aleksey Blekot'
+//                    email = 'aleksey.blekot@gmail.com'
+//                }
+//            }
+////                scm {
+////                    connection = 'scm:git:git://example.com/my-library.git'
+////                    developerConnection = 'scm:git:ssh://example.com/my-library.git'
+////                    url = 'http://example.com/my-library/'
+////                }
+//        }
+    }
+}
+
+dependencies {
+    api project(":calculator")
+}
