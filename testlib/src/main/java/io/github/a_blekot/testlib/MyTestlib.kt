@@ -1,4 +1,4 @@
-package com.a_blekot.exoplayer.testlib
+package io.github.a_blekot.testlib
 
 import com.a_blekot.exoplayer.calculator.DummyCalculator
 

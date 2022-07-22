@@ -2,10 +2,14 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+    id 'signing'
 }
 
+group = project.groupId
+version = project.versionId
+
 android {
-    namespace 'com.a_blekot.exoplayer.testlib'
+    namespace 'io.github.a_blekot.testlib'
     compileSdkVersion rootProject.ext.compile_sdk_version
     splits {
         abi {
@@ -39,62 +43,112 @@ android {
 afterEvaluate {
     publishing {
         publications {
+
+            /*
             libraryDev(MavenPublication) {
                 artifact bundleDevAar
 
-                groupId 'com.a-blekot.exoplayer'
+                groupId 'io.github.a-blekot'
                 artifactId 'testlib-dev'
                 version = "1.0.0"
+
+                pom {
+                    name = 'Testlib dev'
+                    description = 'Test lib description'
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                    developers {
+                        developer {
+                            id = 'a-blekot'
+                            name = 'Aleksey Blekot'
+                            email = 'aleksey.blekot@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/a-blekot/exoplayer.git'
+                        developerConnection = 'scm:git:ssh://github.com/a-blekot/exoplayer.git'
+                        url = 'https://github.com/a-blekot/exoplayer'
+                    }
+                }
             }
             libraryDebug(MavenPublication) {
                 artifact bundleDebugAar
 
-                groupId 'com.a-blekot.exoplayer'
+                groupId 'io.github.a-blekot'
                 artifactId 'testlib-debug'
                 version = "1.0.0"
+
+                pom {
+                    name = 'Testlib debug'
+                    description = 'Test lib description'
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                    developers {
+                        developer {
+                            id = 'a-blekot'
+                            name = 'Aleksey Blekot'
+                            email = 'aleksey.blekot@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/a-blekot/exoplayer.git'
+                        developerConnection = 'scm:git:ssh://github.com/a-blekot/exoplayer.git'
+                        url = 'https://github.com/a-blekot/exoplayer'
+                    }
+                }
             }
+            */
             libraryRelease(MavenPublication) {
                 artifact bundleReleaseAar
 
-                groupId 'com.a-blekot.exoplayer'
+                groupId 'io.github.a-blekot'
                 artifactId 'testlib'
                 version = "1.0.0"
+
+                pom {
+                    name = 'Testlib'
+                    description = 'Test lib description'
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                    developers {
+                        developer {
+                            id = 'a-blekot'
+                            name = 'Aleksey Blekot'
+                            email = 'aleksey.blekot@gmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/a-blekot/exoplayer.git'
+                        developerConnection = 'scm:git:ssh://github.com/a-blekot/exoplayer.git'
+                        url = 'https://github.com/a-blekot/exoplayer'
+                    }
+                }
             }
         }
 
         repositories {
             maven {
-                url 'your_maven_url'
+                url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
                 credentials {
-                    username "your_user_name"
-                    password "your_password"
+                    username = "$NEXUS_USERNAME"
+                    password = "$NEXUS_PASSWORD"
                 }
             }
         }
-
-//        pom {
-//            name = 'Testlib'
-//            description = 'Test lib description'
-////                licenses {
-////                    license {
-////                        name = 'The Apache License, Version 2.0'
-////                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-////                    }
-////                }
-//            developers {
-//                developer {
-//                    id = 'a-blekot'
-//                    name = 'Aleksey Blekot'
-//                    email = 'aleksey.blekot@gmail.com'
-//                }
-//            }
-////                scm {
-////                    connection = 'scm:git:git://example.com/my-library.git'
-////                    developerConnection = 'scm:git:ssh://example.com/my-library.git'
-////                    url = 'http://example.com/my-library/'
-////                }
-//        }
     }
+}
+
+signing {
+    def signingKey = findProperty("signing.keyId")
+    def signingPassword = findProperty("signing.password")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications
 }
 
 dependencies {
